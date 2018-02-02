@@ -3,12 +3,15 @@ package sample;
 public class Edge {
     private int vertexFromID;
     private int vertexToID;
+    private int id;
+    private static int amountOfIds = 0;
     private int weight;
 
     public Edge(int vertexFromID, int vertexToID, int weight){
         this.vertexFromID = vertexFromID;
         this.vertexToID = vertexToID;
         this.weight = weight;
+        this.id = ++amountOfIds;
     }
 
     public int getVertexFromID(){

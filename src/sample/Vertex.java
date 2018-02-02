@@ -1,16 +1,16 @@
 package sample;
 
-import com.sun.javafx.geom.Edge;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 public class Vertex {
     public String name;
     private int id;
-    public static int amountOfIds = 0;
-    public ArrayList<Edge> adjacentEdges = new ArrayList<Edge>();
+    private static int amountOfIds = 0;
+    //public ArrayList<Edge> adjacentEdges = new ArrayList<Edge>();
 
-    public Vertex() {
+    public Vertex(String name) {
         this.id = ++amountOfIds;
+        this.name = name;
     }
 
     public String getName() {
