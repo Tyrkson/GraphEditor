@@ -1,5 +1,6 @@
 package Tests;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +12,7 @@ public class EdgeTest{
 
     @Before
     public void setUp() {
-         edge = new Edge(0, 1, 5);
+        edge = new Edge(0, 1, 5);
     }
 
     @Test
@@ -33,5 +34,15 @@ public class EdgeTest{
     public void testSetWeight() {
         edge.setWeight(0);
         Assert.assertEquals(edge.getWeight(), 0);
+    }
+
+    @Test
+    public void testGetAmountOfIds(){
+        Assert.assertEquals(Edge.getAmountOfIds(), 1);
+    }
+
+    @After
+    public void tearDown(){
+        edge = null;
     }
 }
