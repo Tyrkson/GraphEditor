@@ -9,13 +9,11 @@ public class Graph {
     private Graph(){
     }
 
-    public int addVertex(String name){
-        Vertex vertex = new Vertex("Nimi");
+    public void addVertex(Vertex vertex){
         vertexes.add(vertex);
-        return vertex.getId();
     }
 
-    public void addEdge(int vertexFromId, int vertexToID, int weight){
-        edges.add(new Edge(vertexFromId, vertexToID, weight));
+    public void addEdge(Edge edge){
+        edges.add(edge);
     }
 }
