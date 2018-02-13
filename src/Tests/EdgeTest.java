@@ -43,6 +43,6 @@ public class EdgeTest{
 
     @After
     public void tearDown(){
-        edge = null;
+        Edge.delete(edge);
     }
 }

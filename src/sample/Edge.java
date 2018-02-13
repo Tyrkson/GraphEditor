@@ -11,7 +11,6 @@ public class Edge {
         this.vertexFromID = vertexFromID;
         this.vertexToID = vertexToID;
         this.weight = weight;
-        System.out.println(amountOfIds);
         this.id = amountOfIds;
         amountOfIds++;
     }
@@ -38,5 +37,10 @@ public class Edge {
 
     public static int getAmountOfIds(){
         return amountOfIds;
+    }
+
+    public static void delete(Edge edge){
+        amountOfIds--;
+        edge = null;
     }
 }
