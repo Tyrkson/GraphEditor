@@ -34,15 +34,13 @@ public class Controller{
         }
     }
 
-    @FXML
-    public void addEdge(MouseEvent e){
-        System.out.println(clickCount);
+    private void addEdge(MouseEvent e){
         if(clickCount == 0){
             vertexFromID = new Point(e.getX(), e.getY());
             clickCount++;
         }else{
             vertextToID = new Point(e.getX(), e.getY());
-            drawLine();
+            drawLine(vertexFromID, vertextToID);
             clickCount--;
         }
 
@@ -50,14 +48,16 @@ public class Controller{
 
     }
 
-    private void drawLine() {
+    private void drawLine(Point a, Point b) {
         Line l = new Line();
 
-        l.setStartX(vertexFromID.getX());
-        l.setStartY(vertexFromID.getY());
+        l.setStartX(a.getX());
+        l.setStartY(a.getY());
 
-        l.setEndX(vertextToID.getX());
-        l.setEndY(vertextToID.getY());
+        l.setEndX(b.getX());
+        l.setEndY(b.getY());
+
+
 
         drawPane.getChildren().add(l);
     }
