@@ -9,13 +9,38 @@ public class Graph {
     private Graph(){
     }
 
-    public int addVertex(String name){
-        Vertex vertex = new Vertex("Nimi");
+    public static void addVertex(Vertex vertex){
         vertexes.add(vertex);
-        return vertex.getId();
     }
 
-    public void addEdge(int vertexFromId, int vertexToID, int weight){
-        edges.add(new Edge(vertexFromId, vertexToID, weight));
+    public static void addEdge(Edge edge){
+        edges.add(edge);
+    }
+
+    public static int getVertexesSize(){
+        return vertexes.size();
+    }
+
+    public static Vertex getVertex(String name){
+        for(Vertex v: vertexes){
+            if(v.getName().equals(name)){
+                return v;
+            }
+        }
+        return null;
+    }
+
+    public static int getEdgesSize(){
+        return  edges.size();
+    }
+
+    public static Edge getEdge(int id) {
+        for(Edge e: edges){
+            System.out.println(e.getId());
+            if(e.getId() == id){
+                return e;
+            }
+        }
+        return null;
     }
 }

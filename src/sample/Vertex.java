@@ -9,8 +9,10 @@ public class Vertex {
     //public ArrayList<Edge> adjacentEdges = new ArrayList<Edge>();
 
     public Vertex(String name) {
-        this.id = ++amountOfIds;
+        this.id = amountOfIds;
         this.name = name;
+
+        amountOfIds++;
     }
 
     public String getName() {
@@ -25,8 +27,8 @@ public class Vertex {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public static int getAmountOfIds(){
+        return amountOfIds;
     }
 
 }

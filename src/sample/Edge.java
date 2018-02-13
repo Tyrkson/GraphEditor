@@ -4,14 +4,16 @@ public class Edge {
     private int vertexFromID;
     private int vertexToID;
     private int id;
-    private static int amountOfIds = 0;
+    private static int amountOfIds;
     private int weight;
 
     public Edge(int vertexFromID, int vertexToID, int weight){
         this.vertexFromID = vertexFromID;
         this.vertexToID = vertexToID;
         this.weight = weight;
-        this.id = ++amountOfIds;
+        System.out.println(amountOfIds);
+        this.id = amountOfIds;
+        amountOfIds++;
     }
 
     public int getVertexFromID(){
@@ -28,5 +30,13 @@ public class Edge {
 
     public void setWeight(int weight){
         this.weight = weight;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public static int getAmountOfIds(){
+        return amountOfIds;
     }
 }
