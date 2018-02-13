@@ -1,36 +1,69 @@
 package sample;
 
-import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Line;
 
-public class Controller extends Application{
-    public int createVertex() {
-        Vertex vertex = new Vertex("Name");
-        Graph.addVertex(vertex);
-        return vertex.getId();
+public class Controller{
+
+
+    private int mode = 0;
+
+
+    //Variables for mode 2 (Edge adding)
+    private int clickCount = 0;
+    private Point vertexFromID;
+    private Point vertextToID;
+
+
+
+    @FXML
+    private Pane drawPane;
+
+
+    @FXML
+    public void chooseMethod(MouseEvent e){
+        if(mode == 1){
+            //addVertex
+        }
+
+        if(mode == 2){
+            addEdge(e);
+        }
     }
 
-    @Override
-    public void start(Stage stage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("mainWindow.fxml"));
+    @FXML
+    public void addEdge(MouseEvent e){
+        System.out.println(clickCount);
+        if(clickCount == 0){
+            vertexFromID = new Point(e.getX(), e.getY());
+            clickCount++;
+        }else{
+            vertextToID = new Point(e.getX(), e.getY());
+            drawLine();
+            clickCount--;
+        }
 
-        root.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                System.out.println("Mouse clicked");
-            }
-        });
 
 
+    }
 
-        Scene scene = new Scene(root,600,500);
-        stage.setTitle("Graph editor");
-        stage.setScene(scene);
-        stage.show();
+    private void drawLine() {
+        Line l = new Line();
+
+        l.setStartX(vertexFromID.getX());
+        l.setStartY(vertexFromID.getY());
+
+        l.setEndX(vertextToID.getX());
+        l.setEndY(vertextToID.getY());
+
+        drawPane.getChildren().add(l);
+    }
+
+    @FXML
+    public void changeModeTo2(){
+        mode = 2;
     }
 }

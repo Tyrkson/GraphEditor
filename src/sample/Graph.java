@@ -36,7 +36,6 @@ public class Graph {
 
     public static Edge getEdge(int id) {
         for(Edge e: edges){
-            System.out.println(e.getId());
             if(e.getId() == id){
                 return e;
             }
