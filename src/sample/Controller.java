@@ -38,13 +38,13 @@ public class Controller{
         }
     }
 
-    private void addEdge(MouseEvent e, int id){
+    private void addEdge(Point point, int id){
         if(clickCount == 0){
-            pointA = new Point(e.getX(), e.getY());
+            pointA = new Point(point.getX(), point.getY());
             vertexIdA = id;
             clickCount++;
         }else{
-            pointB = new Point(e.getX(), e.getY());
+            pointB = new Point(point.getX(), point.getY());
             vertexIdB = id;
             Edge edge = new Edge(vertexIdA, vertexIdB, 4);
             drawLine(pointA, pointB);
@@ -61,6 +61,7 @@ public class Controller{
         l.setEndX(b.getX());
         l.setEndY(b.getY());
 
+        l.setStroke(Color.RED);
 
 
         drawPane.getChildren().add(l);
@@ -83,7 +84,8 @@ public class Controller{
         c.setOnMouseClicked(e ->{
             if(mode == 2) {
                 int vertexID = Integer.parseInt(c.getId());
-                addEdge(e, vertexID);
+
+                addEdge(new Point(c.getCenterX(), c.getCenterY()), vertexID);
             }
         });
 
