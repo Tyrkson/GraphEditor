@@ -8,13 +8,31 @@ import javafx.scene.shape.Line;
 
 public class Controller{
 
+
+    private int mode = 0;
+
+
+    //Variables for mode 2 (Edge adding)
     private int clickCount = 0;
     private Point vertexFromID;
     private Point vertextToID;
 
+
+
     @FXML
     private Pane drawPane;
 
+
+    @FXML
+    public void chooseMethod(MouseEvent e){
+        if(mode == 1){
+            //addVertex
+        }
+
+        if(mode == 2){
+            addEdge(e);
+        }
+    }
 
     @FXML
     public void addEdge(MouseEvent e){
@@ -42,5 +60,10 @@ public class Controller{
         l.setEndY(vertextToID.getY());
 
         drawPane.getChildren().add(l);
+    }
+
+    @FXML
+    public void changeModeTo2(){
+        mode = 2;
     }
 }
