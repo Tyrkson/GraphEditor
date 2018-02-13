@@ -11,9 +11,10 @@
         <items>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="14.0" layoutY="15.0" mnemonicParsing="false" text="Vertex" />
-                  <Button layoutX="89.0" layoutY="15.0" mnemonicParsing="false" onAction="#changeModeTo2" text="Edge" />
+                  <Button layoutX="93.0" layoutY="15.0" mnemonicParsing="false" text="Vertex" />
+                  <Button layoutX="176.0" layoutY="15.0" mnemonicParsing="false" onAction="#changeModeTo2" text="Edge" />
                   <Button layoutX="510.0" layoutY="15.0" mnemonicParsing="false" text="Remove" />
+                  <Button layoutX="14.0" layoutY="15.0" mnemonicParsing="false" onAction="#changeModeTo0" text="Cursor" />
                </children>
             </AnchorPane>
             <Pane fx:id="drawPane" onMouseClicked="#chooseMethod" prefHeight="224.0" prefWidth="598.0" />

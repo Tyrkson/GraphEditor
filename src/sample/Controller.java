@@ -66,4 +66,11 @@ public class Controller{
     public void changeModeTo2(){
         mode = 2;
     }
+
+    @FXML
+    public void changeModeTo0(){
+        clickCount = 0;
+
+        mode = 0;
+    }
 }
