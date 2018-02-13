@@ -23,10 +23,6 @@ public class Controller{
 
 
 
-    private Point vertexCoords;
-
-
-
     @FXML
     private Pane drawPane;
 
@@ -60,25 +56,25 @@ public class Controller{
 
         l.setEndX(b.getX());
         l.setEndY(b.getY());
+        l.setStroke(Color.RED);
 
         l.setStroke(Color.RED);
 
 
-        drawPane.getChildren().add(l);
+        drawPane.getChildren().add(0, l);
     }
 
     public void addVertex(MouseEvent e){
         Vertex vertex = new Vertex("Name");
-        vertexCoords = new Point(e.getX(),e.getY());
-        drawPoint(vertex.getId());
+        drawPoint(vertex.getId(), e);
     }
 
-    private void drawPoint(int id){
+    private void drawPoint(int id, MouseEvent mouseE){
         Circle c = new Circle();
         c.setFill(Color.BLACK);
         c.setRadius(10);
-        c.setCenterX(vertexCoords.getX());
-        c.setCenterY(vertexCoords.getY());
+        c.setCenterX(mouseE.getX());
+        c.setCenterY(mouseE.getY());
         c.setId(String.valueOf(id));
 
         c.setOnMouseClicked(e ->{
