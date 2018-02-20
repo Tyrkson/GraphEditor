@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+import java.util.Optional;
+
 public class Controller{
 
 
@@ -60,7 +62,23 @@ public class Controller{
         }else{
             pointB = new Point(point.getX(), point.getY());
             vertexIdB = id;
-            Edge edge = new Edge(vertexIdA, vertexIdB, 4);
+
+
+            Dialog<String> dialog = createSimpleDialogBox("Enter weight");
+
+            dialog.setResultConverter((ButtonType button) -> {
+                if (button == ButtonType.OK) {
+                    return input.getText();
+                }
+                return null;
+            });
+
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent((String weight) ->{
+                    Edge edge = new Edge(vertexIdA, vertexIdB, Integer.parseInt(weight));
+            });
+
+
             drawLine(pointA, pointB);
             clickCount--;
         }
