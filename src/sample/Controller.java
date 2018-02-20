@@ -1,8 +1,13 @@
 package sample;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -21,6 +26,10 @@ public class Controller{
     private int vertexIdB;
 
 
+    //Variables for dialog
+    TextField input;
+
+
 
 
     @FXML
@@ -30,7 +39,16 @@ public class Controller{
     @FXML
     public void chooseMethod(MouseEvent e){
         if(mode == 1){
-            addVertex(e);
+            Dialog<String> dialog = createSimpleDialogBox("Enter name");
+
+            dialog.setResultConverter((ButtonType button) -> {
+                if (button == ButtonType.OK) {
+                    addVertex(e, input.getText());
+                }
+                return null;
+            });
+
+            dialog.showAndWait();
         }
     }
 
@@ -64,8 +82,8 @@ public class Controller{
         drawPane.getChildren().add(0, l);
     }
 
-    public void addVertex(MouseEvent e){
-        Vertex vertex = new Vertex("Name");
+    public void addVertex(MouseEvent e, String name){
+        Vertex vertex = new Vertex(name);
         drawPoint(vertex.getId(), e);
     }
 
@@ -103,5 +121,19 @@ public class Controller{
         clickCount = 0;
 
         mode = 0;
+    }
+
+    private Dialog<String> createSimpleDialogBox(String title){
+        Dialog<String> dialog = new Dialog<>();
+        dialog.setTitle(title);
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        input = new TextField();
+
+        dialogPane.setContent(new VBox(3, input));
+
+        return dialog;
     }
 }
