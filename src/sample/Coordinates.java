@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Coordinates {
 
-    private static HashMap<Integer, Point> allVertexCoordinates;
+    private static HashMap<Integer, Point> allVertexCoordinates = new HashMap<>();
 
     private Coordinates(){}
 

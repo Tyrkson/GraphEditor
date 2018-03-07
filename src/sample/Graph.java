@@ -21,9 +21,9 @@ public class Graph {
         return vertexes.size();
     }
 
-    public static Vertex getVertex(String name){
+    public static Vertex getVertex(int id){
         for(Vertex v: vertexes){
-            if(v.getName().equals(name)){
+            if(v.getId() == id){
                 return v;
             }
         }

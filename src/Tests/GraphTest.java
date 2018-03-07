@@ -19,7 +19,7 @@ public class GraphTest{
         Graph.addVertex(new Vertex(""));
         Graph.addVertex(new Vertex("asd"));
 
-        Vertex vertex = Graph.getVertex("asd");
+        Vertex vertex = Graph.getVertex(2);
 
         Assert.assertNotNull(vertex);
 

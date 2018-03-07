@@ -76,6 +76,9 @@ public class Controller{
             Optional<String> result = dialog.showAndWait();
             result.ifPresent((String weight) ->{
                     Edge edge = new Edge(vertexIdA, vertexIdB, Integer.parseInt(weight));
+                    Graph.getVertex(vertexIdA).adjacentEdges.add(edge);
+                    Graph.getVertex(vertexIdB).adjacentEdges.add(edge);
+                    Graph.addEdge(edge);
             });
 
 
@@ -102,6 +105,7 @@ public class Controller{
 
     public void addVertex(MouseEvent e, String name){
         Vertex vertex = new Vertex(name);
+        Graph.addVertex(vertex);
         drawPoint(vertex.getId(), e);
     }
 
@@ -112,6 +116,7 @@ public class Controller{
         c.setCenterX(mouseE.getX());
         c.setCenterY(mouseE.getY());
         c.setId(String.valueOf(id));
+        Coordinates.add(id, new Point(c.getCenterX(), c.getCenterY()));
 
         c.setOnMouseClicked(e ->{
             if(mode == 2) {
