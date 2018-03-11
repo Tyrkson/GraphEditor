@@ -21,9 +21,9 @@ public class Graph {
         return vertexes.size();
     }
 
-    public static Vertex getVertex(int id){
+    public static Vertex getVertex(String id){
         for(Vertex v: vertexes){
-            if(v.getId() == id){
+            if(v.getId().equals(id)){
                 return v;
             }
         }
@@ -34,9 +34,9 @@ public class Graph {
         return  edges.size();
     }
 
-    public static Edge getEdge(int id) {
+    public static Edge getEdge(String id) {
         for(Edge e: edges){
-            if(e.getId() == id){
+            if(e.getId().equals(id)){
                 return e;
             }
         }

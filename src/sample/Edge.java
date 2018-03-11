@@ -7,25 +7,24 @@ public class Edge implements Serializable{
     public static final long serialVersionUID = -60030697195044615L;
 
 
-    private int vertexFromID;
-    private int vertexToID;
-    private int id;
-    private static int amountOfIds;
+    private String vertexFromID;
+    private String vertexToID;
+    private String id;
     private int weight;
 
-    public Edge(int vertexFromID, int vertexToID, int weight){
+    public Edge(String vertexFromID, String vertexToID, int weight){
         this.vertexFromID = vertexFromID;
         this.vertexToID = vertexToID;
         this.weight = weight;
-        this.id = amountOfIds;
-        amountOfIds++;
+        this.id = IDManager.generateID();
+        IDManager.incrementAmountEdgeOfIDs(1);
     }
 
-    public int getVertexFromID(){
+    public String getVertexFromID(){
         return vertexFromID;
     }
 
-    public int getVertexToID(){
+    public String getVertexToID(){
         return vertexToID;
     }
 
@@ -37,16 +36,21 @@ public class Edge implements Serializable{
         this.weight = weight;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
+    public void setID(String name) {
+        this.id = name;
+    }
+
     public static int getAmountOfIds(){
-        return amountOfIds;
+        return IDManager.getAmountOfEdgeIDs();
     }
 
     public static void delete(Edge edge){
-        amountOfIds--;
+        IDManager.reduceAmountOfEdgeIDs(1);
+        edge.id = null;
         edge = null;
     }
 }

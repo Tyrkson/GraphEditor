@@ -12,17 +12,17 @@ public class EdgeTest{
 
     @Before
     public void setUp() {
-        edge = new Edge(0, 1, 5);
+        edge = new Edge("0", "1", 5);
     }
 
     @Test
     public void testGetVertexFromID() {
-        Assert.assertEquals(edge.getVertexFromID(), 0);
+        Assert.assertEquals(edge.getVertexFromID(), "0");
     }
 
     @Test
     public void testGetVertexToID() {
-        Assert.assertEquals(edge.getVertexToID(), 1);
+        Assert.assertEquals(edge.getVertexToID(), "1");
     }
 
     @Test

@@ -3,6 +3,7 @@ package sample;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class FileManager {
 
@@ -36,6 +37,14 @@ public class FileManager {
         oos.close();
     }
 
+    public static void saveAmountOfIDs(String fn) throws IOException{
+        Writer out = new FileWriter(fn);
+        out.write(Integer.toString(IDManager.getAmountOfVertexIDs()) + " ");
+        out.write(Integer.toString(IDManager.getAmountOfEdgeIDs()));
+        out.flush();
+        out.close();
+
+    }
     public static void loadGraph(String fn) throws IOException {
         FileInputStream fis = new FileInputStream(fn);
         try{
@@ -55,7 +64,7 @@ public class FileManager {
         try{
             ObjectInputStream ois = new ObjectInputStream(fis);
 
-            Coordinates.setAllVertexCoordinates((HashMap<Integer, Point>) ois.readObject());
+            Coordinates.setAllVertexCoordinates((HashMap<String, Point>) ois.readObject());
 
         }catch (EOFException e){
 
@@ -76,5 +85,12 @@ public class FileManager {
         } catch (ClassNotFoundException e) {
             Graph.setEdges(new ArrayList<>());
         }
+    }
+    public static void loadIDAmounts(String fn) throws FileNotFoundException {
+        Scanner in = new Scanner(new File(fn));
+        if(in.hasNextInt()) IDManager.setAmountOfVertexIDs(in.nextInt());
+        if(in.hasNextInt()) IDManager.setAmountOfEdgeIDs(in.nextInt());
+        System.out.println(IDManager.getAmountOfVertexIDs() + " " + IDManager.getAmountOfEdgeIDs());
+        in.close();
     }
 }

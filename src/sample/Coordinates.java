@@ -4,15 +4,15 @@ import java.util.HashMap;
 
 public class Coordinates {
 
-    private static HashMap<Integer, Point> allVertexCoordinates = new HashMap<>();
+    private static HashMap<String, Point> allVertexCoordinates = new HashMap<>();
 
     private Coordinates(){}
 
-    public static Point get(Integer VertexID){
+    public static Point get(String VertexID){
         return allVertexCoordinates.get(VertexID);
     }
 
-    public static void add(Integer vertexID, Point vertexPoint){
+    public static void add(String vertexID, Point vertexPoint){
         allVertexCoordinates.put(vertexID, vertexPoint);
     }
 
@@ -22,11 +22,11 @@ public class Coordinates {
         return isRemoved != null ;
     }
 
-    public static HashMap<Integer, Point> getAllVertexCoordinates() {
+    public static HashMap<String, Point> getAllVertexCoordinates() {
         return allVertexCoordinates;
     }
 
-    public static void setAllVertexCoordinates(HashMap<Integer, Point> allVertexCoordinates) {
+    public static void setAllVertexCoordinates(HashMap<String, Point> allVertexCoordinates) {
         Coordinates.allVertexCoordinates = allVertexCoordinates;
     }
 }

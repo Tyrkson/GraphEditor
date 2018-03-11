@@ -23,6 +23,7 @@ public class Main extends Application {
         System.out.println("Stage is closing");
         FileManager.saveGraph("Graph.txt", "Edges.txt");
         FileManager.saveCoordinates("Coordinates.txt");
+        FileManager.saveAmountOfIDs("IDAmount.txt");
     }
 
 

@@ -26,8 +26,8 @@ public class Controller{
     private int clickCount = 0;
     private Point pointA;
     private Point pointB;
-    private int vertexIdA;
-    private int vertexIdB;
+    private String vertexIdA;
+    private String vertexIdB;
 
 
     //Variables for dialog
@@ -45,10 +45,10 @@ public class Controller{
         FileManager.loadCoordinates("Coordinates.txt");
         FileManager.loadGraph("Graph.txt");
         FileManager.loadEdges("Edges.txt");
-
+        FileManager.loadIDAmounts("IDAmount.txt");
 
         if(Coordinates.getAllVertexCoordinates().size() != 0) {
-            for(Integer i : Coordinates.getAllVertexCoordinates().keySet()){
+            for(String i : Coordinates.getAllVertexCoordinates().keySet()){
                 drawPoint(i, Coordinates.get(i));
             }
             for(Edge e : Graph.getEdges()){
@@ -75,7 +75,7 @@ public class Controller{
         }
     }
 
-    private void addEdge(Point point, int id){
+    private void addEdge(Point point, String id){
         if(clickCount == 0){
             pointA = new Point(point.getX(), point.getY());
             vertexIdA = id;
@@ -104,10 +104,15 @@ public class Controller{
                     }
 
                     Edge edge = new Edge(vertexIdA, vertexIdB, w);
-                    Graph.getVertex(vertexIdA).adjacentEdges.add(edge);
-                    Graph.getVertex(vertexIdB).adjacentEdges.add(edge);
-                    Graph.addEdge(edge);
-                    drawLine(pointA, pointB, edge.getId());
+                    try{
+                        Graph.getVertex(vertexIdA).adjacentEdges.add(edge);
+                        Graph.getVertex(vertexIdB).adjacentEdges.add(edge);
+                        Graph.addEdge(edge);
+                        drawLine(pointA, pointB, edge.getId());
+                    }catch (NullPointerException e) {
+                        System.out.println("Can't add edge");
+                    }
+
             });
 
 
@@ -115,7 +120,7 @@ public class Controller{
         }
     }
 
-    private void drawLine(Point a, Point b, int id) {
+    private void drawLine(Point a, Point b, String id) {
         Line l = new Line();
 
         l.setStartX(a.getX());
@@ -127,10 +132,10 @@ public class Controller{
 
         l.setStroke(Color.RED);
 
-        l.setId(String.valueOf(id));
+        l.setId(id);
 
 
-        drawPane.getChildren().add(0, l);
+        drawPane.getChildren().add(0,l);
     }
 
     public void addVertex(MouseEvent e, String name){
@@ -139,7 +144,7 @@ public class Controller{
         drawPoint(vertex.getId(), new Point(e.getX(), e.getY()));
     }
 
-    private void drawPoint(int id, Point point){
+    private void drawPoint(String id, Point point){
         Circle c = new Circle();
         c.setFill(Color.BLACK);
         c.setRadius(10);
@@ -150,7 +155,7 @@ public class Controller{
 
         c.setOnMouseClicked(e ->{
             if(mode == 2) {
-                int vertexID = Integer.parseInt(c.getId());
+                String vertexID = c.getId();
 
                 addEdge(new Point(c.getCenterX(), c.getCenterY()), vertexID);
             }
@@ -169,30 +174,30 @@ public class Controller{
         c.setCenterX(e.getX());
         c.setCenterY(e.getY());
 
-        Vertex v = Graph.getVertex(Integer.parseInt(c.getId()));
+        Vertex v = Graph.getVertex(c.getId());
 
         Coordinates.add(v.getId(), new Point(e.getX(), e.getY()));
 
         for(Edge edge: v.adjacentEdges){
-            int id = edge.getId();
+            String id = edge.getId();
             removeLine(id);
             getPointsAndCallDrawLine(edge);
         }
     }
 
     private void getPointsAndCallDrawLine(Edge edge) {
-        int a = edge.getVertexFromID();
-        int b = edge.getVertexToID();
+        String a = edge.getVertexFromID();
+        String b = edge.getVertexToID();
         Point pointA = Coordinates.get(a);
         Point pointB = Coordinates.get(b);
         drawLine(pointA, pointB, edge.getId());
     }
 
-    private void removeLine(int id) {
+    private void removeLine(String id) {
         Line l = null;
         for(Node n: drawPane.getChildren()){
             if(n instanceof Line){
-                if(Integer.parseInt(n.getId()) == id){
+                if(n.getId().equals(id)){
                     l = (Line) n;
                     break;
                 }

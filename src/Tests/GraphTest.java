@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import sample.Edge;
 import sample.Graph;
+import sample.IDManager;
 import sample.Vertex;
 
 public class GraphTest{
@@ -16,28 +17,34 @@ public class GraphTest{
         Graph.addVertex(new Vertex("test"));
         Assert.assertEquals(Graph.getVertexesSize(), 1);
 
-        Graph.addVertex(new Vertex(""));
+        Vertex tmp = new Vertex("");
+        String id = IDManager.setCustomID("2");
+        tmp.setID(id);
+        Graph.addVertex(tmp);
         Graph.addVertex(new Vertex("asd"));
 
-        Vertex vertex = Graph.getVertex(2);
+        Vertex vertex = Graph.getVertex(id);
 
         Assert.assertNotNull(vertex);
 
-        Assert.assertEquals(vertex.getName(), "asd");
+        Assert.assertEquals(vertex.getName(), "");
     }
 
     @Test
     public void testAddEdge() {
-        Graph.addEdge(new Edge(0, 0, 1));
+        Edge tmp = new Edge("0","0",1);
+        String id = IDManager.setCustomID("1");
+        tmp.setID(id);
+        Graph.addEdge(tmp);
         Assert.assertEquals(Graph.getEdgesSize(), 1);
 
-        Graph.addEdge(new Edge(0, 0 , 0));
-        Graph.addEdge(new Edge(3, 2, 3));
+        Graph.addEdge(new Edge("0", "0" , 0));
+        Graph.addEdge(new Edge("3", "2", 3));
 
-        Edge edge = Graph.getEdge(1);
+        Edge edge = Graph.getEdge(id);
 
         Assert.assertNotNull(edge);
 
-        Assert.assertEquals(edge.getId(), 1);
+        Assert.assertEquals(edge.getId(), id);
     }
 }

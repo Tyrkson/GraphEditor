@@ -4,22 +4,19 @@ package sample;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-//import java.util.ArrayList;
 public class Vertex implements Serializable{
 
     public static final long serialVersionUID = -6003069719504334615L;
 
 
     public String name;
-    private int id;
-    private static int amountOfIds = 0;
+    private String id;
     public ArrayList<Edge> adjacentEdges = new ArrayList<Edge>();
 
     public Vertex(String name) {
-        this.id = amountOfIds;
+        this.id = IDManager.generateID();
         this.name = name;
-
-        amountOfIds++;
+        IDManager.incrementAmountVertexOfIDs(1);
     }
 
     public String getName() {
@@ -30,12 +27,15 @@ public class Vertex implements Serializable{
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
+    public void setID(String name) {
+        this.id = name;
+    }
     public static int getAmountOfIds(){
-        return amountOfIds;
+        return IDManager.getAmountOfVertexIDs();
     }
 
 }

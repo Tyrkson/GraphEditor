@@ -3,17 +3,19 @@ package Tests;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import sample.IDManager;
 import sample.Vertex;
 
 public class VertexTest {
 
     Vertex vertex;
-    int id;
+    String id;
 
     @Before
     public void setUp(){
-        id = Vertex.getAmountOfIds();
+        id = IDManager.setCustomID("69");
         vertex = new Vertex("Name");
+        vertex.setID(id);
     }
 
     @Test
