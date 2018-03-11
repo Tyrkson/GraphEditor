@@ -42,4 +42,20 @@ public class Graph {
         }
         return null;
     }
+
+    public static ArrayList<Vertex> getVertexes() {
+        return vertexes;
+    }
+
+    public static ArrayList<Edge> getEdges() {
+        return edges;
+    }
+
+    public static void setVertexes(ArrayList<Vertex> vertexes) {
+        Graph.vertexes = vertexes;
+    }
+
+    public static void setEdges(ArrayList<Edge> edges) {
+        Graph.edges = edges;
+    }
 }

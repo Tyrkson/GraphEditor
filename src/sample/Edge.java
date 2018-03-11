@@ -1,6 +1,12 @@
 package sample;
 
-public class Edge {
+import java.io.Serializable;
+
+public class Edge implements Serializable{
+
+    public static final long serialVersionUID = -60030697195044615L;
+
+
     private int vertexFromID;
     private int vertexToID;
     private int id;

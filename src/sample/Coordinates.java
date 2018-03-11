@@ -21,4 +21,12 @@ public class Coordinates {
 
         return isRemoved != null ;
     }
+
+    public static HashMap<Integer, Point> getAllVertexCoordinates() {
+        return allVertexCoordinates;
+    }
+
+    public static void setAllVertexCoordinates(HashMap<Integer, Point> allVertexCoordinates) {
+        Coordinates.allVertexCoordinates = allVertexCoordinates;
+    }
 }

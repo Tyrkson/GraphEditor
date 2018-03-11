@@ -1,10 +1,15 @@
 package sample;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 //import java.util.ArrayList;
-public class Vertex {
+public class Vertex implements Serializable{
+
+    public static final long serialVersionUID = -6003069719504334615L;
+
+
     public String name;
     private int id;
     private static int amountOfIds = 0;

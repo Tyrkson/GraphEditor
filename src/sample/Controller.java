@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
@@ -12,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public class Controller{
@@ -36,6 +38,25 @@ public class Controller{
 
     @FXML
     private Pane drawPane;
+
+
+    @FXML
+    public void initialize() throws IOException {
+        FileManager.loadCoordinates("Coordinates.txt");
+        FileManager.loadGraph("Graph.txt");
+        FileManager.loadEdges("Edges.txt");
+
+
+        if(Coordinates.getAllVertexCoordinates().size() != 0) {
+            for(Integer i : Coordinates.getAllVertexCoordinates().keySet()){
+                drawPoint(i, Coordinates.get(i));
+            }
+            for(Edge e : Graph.getEdges()){
+                drawLine(Coordinates.get(e.getVertexFromID()),
+                        Coordinates.get(e.getVertexToID()), e.getId());
+            }
+        }
+    }
 
 
     @FXML
@@ -75,19 +96,26 @@ public class Controller{
 
             Optional<String> result = dialog.showAndWait();
             result.ifPresent((String weight) ->{
-                    Edge edge = new Edge(vertexIdA, vertexIdB, Integer.parseInt(weight));
+                    int w;
+                    try {
+                        w = Integer.parseInt(weight);
+                    }catch (NumberFormatException e){
+                        w = 5;
+                    }
+
+                    Edge edge = new Edge(vertexIdA, vertexIdB, w);
                     Graph.getVertex(vertexIdA).adjacentEdges.add(edge);
                     Graph.getVertex(vertexIdB).adjacentEdges.add(edge);
                     Graph.addEdge(edge);
+                    drawLine(pointA, pointB, edge.getId());
             });
 
 
-            drawLine(pointA, pointB);
             clickCount--;
         }
     }
 
-    private void drawLine(Point a, Point b) {
+    private void drawLine(Point a, Point b, int id) {
         Line l = new Line();
 
         l.setStartX(a.getX());
@@ -99,6 +127,8 @@ public class Controller{
 
         l.setStroke(Color.RED);
 
+        l.setId(String.valueOf(id));
+
 
         drawPane.getChildren().add(0, l);
     }
@@ -106,15 +136,15 @@ public class Controller{
     public void addVertex(MouseEvent e, String name){
         Vertex vertex = new Vertex(name);
         Graph.addVertex(vertex);
-        drawPoint(vertex.getId(), e);
+        drawPoint(vertex.getId(), new Point(e.getX(), e.getY()));
     }
 
-    private void drawPoint(int id, MouseEvent mouseE){
+    private void drawPoint(int id, Point point){
         Circle c = new Circle();
         c.setFill(Color.BLACK);
         c.setRadius(10);
-        c.setCenterX(mouseE.getX());
-        c.setCenterY(mouseE.getY());
+        c.setCenterX(point.getX());
+        c.setCenterY(point.getY());
         c.setId(String.valueOf(id));
         Coordinates.add(id, new Point(c.getCenterX(), c.getCenterY()));
 
@@ -126,8 +156,51 @@ public class Controller{
             }
         });
 
+        c.setOnMouseDragged(e ->{
+            if(mode == 0) {
+                dragVertex(c, e);
+            }
+        });
+
         drawPane.getChildren().add(c);
     }
+
+    private void dragVertex(Circle c, MouseEvent e) {
+        c.setCenterX(e.getX());
+        c.setCenterY(e.getY());
+
+        Vertex v = Graph.getVertex(Integer.parseInt(c.getId()));
+
+        Coordinates.add(v.getId(), new Point(e.getX(), e.getY()));
+
+        for(Edge edge: v.adjacentEdges){
+            int id = edge.getId();
+            removeLine(id);
+            getPointsAndCallDrawLine(edge);
+        }
+    }
+
+    private void getPointsAndCallDrawLine(Edge edge) {
+        int a = edge.getVertexFromID();
+        int b = edge.getVertexToID();
+        Point pointA = Coordinates.get(a);
+        Point pointB = Coordinates.get(b);
+        drawLine(pointA, pointB, edge.getId());
+    }
+
+    private void removeLine(int id) {
+        Line l = null;
+        for(Node n: drawPane.getChildren()){
+            if(n instanceof Line){
+                if(Integer.parseInt(n.getId()) == id){
+                    l = (Line) n;
+                    break;
+                }
+            }
+        }
+        if(l != null) drawPane.getChildren().remove(l);
+    }
+
     @FXML
     public void changeModeTo2(){
         mode = 2;
