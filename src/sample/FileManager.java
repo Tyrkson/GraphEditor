@@ -37,21 +37,13 @@ public class FileManager {
         oos.close();
     }
 
-    public static void saveAmountOfIDs(String fn) throws IOException{
-        Writer out = new FileWriter(fn);
-        out.write(Integer.toString(IDManager.getAmountOfVertexIDs()) + " ");
-        out.write(Integer.toString(IDManager.getAmountOfEdgeIDs()));
-        out.flush();
-        out.close();
 
-    }
     public static void loadGraph(String fn) throws IOException {
         FileInputStream fis = new FileInputStream(fn);
         try{
             ObjectInputStream ois = new ObjectInputStream(fis);
 
             Graph.setVertexes((ArrayList<Vertex>) ois.readObject());
-
         }catch (EOFException e){
 
         } catch (ClassNotFoundException e) {
@@ -79,18 +71,11 @@ public class FileManager {
             ObjectInputStream ois = new ObjectInputStream(fis);
 
             Graph.setEdges((ArrayList<Edge>) ois.readObject());
-
         }catch (EOFException e){
 
         } catch (ClassNotFoundException e) {
             Graph.setEdges(new ArrayList<>());
         }
     }
-    public static void loadIDAmounts(String fn) throws FileNotFoundException {
-        Scanner in = new Scanner(new File(fn));
-        if(in.hasNextInt()) IDManager.setAmountOfVertexIDs(in.nextInt());
-        if(in.hasNextInt()) IDManager.setAmountOfEdgeIDs(in.nextInt());
-        System.out.println(IDManager.getAmountOfVertexIDs() + " " + IDManager.getAmountOfEdgeIDs());
-        in.close();
-    }
+
 }

@@ -21,9 +21,9 @@ public class Main extends Application {
     @Override
     public void stop() throws IOException {
         System.out.println("Stage is closing");
+        System.out.println(Graph.getVertexesSize() + " " + Graph.getEdgesSize());
         FileManager.saveGraph("Graph.txt", "Edges.txt");
         FileManager.saveCoordinates("Coordinates.txt");
-        FileManager.saveAmountOfIDs("IDAmount.txt");
     }
 
 

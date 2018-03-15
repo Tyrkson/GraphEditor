@@ -45,7 +45,6 @@ public class Controller{
         FileManager.loadCoordinates("Coordinates.txt");
         FileManager.loadGraph("Graph.txt");
         FileManager.loadEdges("Edges.txt");
-        FileManager.loadIDAmounts("IDAmount.txt");
 
         if(Coordinates.getAllVertexCoordinates().size() != 0) {
             for(String i : Coordinates.getAllVertexCoordinates().keySet()){
@@ -159,6 +158,9 @@ public class Controller{
 
                 addEdge(new Point(c.getCenterX(), c.getCenterY()), vertexID);
             }
+            else if(mode == 3) {
+                removeCircle(c.getId());
+            }
         });
 
         c.setOnMouseDragged(e ->{
@@ -171,6 +173,7 @@ public class Controller{
     }
 
     private void dragVertex(Circle c, MouseEvent e) {
+        //Rework
         c.setCenterX(e.getX());
         c.setCenterY(e.getY());
 
@@ -206,6 +209,37 @@ public class Controller{
         if(l != null) drawPane.getChildren().remove(l);
     }
 
+    private void removeCircle(String id) {
+        Circle c = null;
+        for(Node n: drawPane.getChildren()){
+            if(n instanceof Circle){
+                if(n.getId().equals(id)){
+                    c = (Circle) n;
+                    break;
+                }
+            }
+        }
+        if(c != null) {
+            Vertex v = Graph.getVertex(c.getId());
+            if(v != null) {
+                for (Edge edge : v.adjacentEdges) {
+                    String id1 = edge.getId();
+                    if (id1 != null) {
+                        removeLine(id1);
+                        Graph.removeEdge(Graph.getEdge(edge.getId()));
+                    }
+                }
+                Graph.removeVertex(v);
+                Coordinates.remove(c.getId());
+            }
+            else System.out.println("Vertex is null");
+            drawPane.getChildren().remove(c);
+        }
+    }
+    @FXML
+    public void changeModeTo3(){
+        mode = 3;
+    }
     @FXML
     public void changeModeTo2(){
         mode = 2;

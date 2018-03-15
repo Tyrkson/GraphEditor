@@ -17,7 +17,6 @@ public class Edge implements Serializable{
         this.vertexToID = vertexToID;
         this.weight = weight;
         this.id = IDManager.generateID();
-        IDManager.incrementAmountEdgeOfIDs(1);
     }
 
     public String getVertexFromID(){
@@ -49,8 +48,7 @@ public class Edge implements Serializable{
     }
 
     public static void delete(Edge edge){
-        IDManager.reduceAmountOfEdgeIDs(1);
         edge.id = null;
-        edge = null;
+        //edge = null;
     }
 }

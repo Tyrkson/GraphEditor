@@ -16,7 +16,7 @@ public class Coordinates {
         allVertexCoordinates.put(vertexID, vertexPoint);
     }
 
-    public static boolean remove(Integer vertexID){
+    public static boolean remove(String vertexID){
         Point isRemoved = allVertexCoordinates.remove(vertexID);
 
         return isRemoved != null ;

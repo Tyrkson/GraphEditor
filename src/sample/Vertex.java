@@ -16,7 +16,6 @@ public class Vertex implements Serializable{
     public Vertex(String name) {
         this.id = IDManager.generateID();
         this.name = name;
-        IDManager.incrementAmountVertexOfIDs(1);
     }
 
     public String getName() {

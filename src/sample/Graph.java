@@ -43,6 +43,12 @@ public class Graph {
         return null;
     }
 
+    public static void removeVertex(Vertex v) {
+        vertexes.remove(v);
+    }
+    public static void removeEdge(Edge e) {
+        edges.remove(e);
+    }
     public static ArrayList<Vertex> getVertexes() {
         return vertexes;
     }
