@@ -13,8 +13,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("mainWindow.fxml"));
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Graph Editor");
         primaryStage.setScene(new Scene(root));
+        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(600);
         primaryStage.show();
     }
 

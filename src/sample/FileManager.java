@@ -44,6 +44,11 @@ public class FileManager {
             ObjectInputStream ois = new ObjectInputStream(fis);
 
             Graph.setVertexes((ArrayList<Vertex>) ois.readObject());
+            /*for (int i = 0; i < Graph.getVertexesSize(); i++) {
+                for (Vertex x :Graph.) {
+
+                }
+            }*/
         }catch (EOFException e){
 
         } catch (ClassNotFoundException e) {

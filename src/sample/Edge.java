@@ -49,6 +49,5 @@ public class Edge implements Serializable{
 
     public static void delete(Edge edge){
         edge.id = null;
-        //edge = null;
     }
 }

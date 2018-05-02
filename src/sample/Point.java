@@ -6,7 +6,6 @@ public class Point implements Serializable{
 
     public static final long serialVersionUID = -6069719504334615L;
 
-
     private double x;
     private double y;
 

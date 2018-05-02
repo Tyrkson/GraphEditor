@@ -1,11 +1,9 @@
 package sample;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -14,6 +12,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class Controller{
@@ -33,8 +32,10 @@ public class Controller{
     //Variables for dialog
     TextField input;
 
-
-
+    //Variables for mode 4(Path calculation)
+    private boolean startSet = false;
+    private String startID;
+    private String endID;
 
     @FXML
     private Pane drawPane;
@@ -52,11 +53,10 @@ public class Controller{
             }
             for(Edge e : Graph.getEdges()){
                 drawLine(Coordinates.get(e.getVertexFromID()),
-                        Coordinates.get(e.getVertexToID()), e.getId());
+                        Coordinates.get(e.getVertexToID()), e.getId(),Color.RED);
             }
         }
     }
-
 
     @FXML
     public void chooseMethod(MouseEvent e){
@@ -73,7 +73,30 @@ public class Controller{
             dialog.showAndWait();
         }
     }
-
+    private Boolean isValid(String value){
+        try{
+            return Integer.parseInt(value) >= 0;
+        }catch (NumberFormatException e){
+            return false;
+        }
+    }
+    private Optional<String> getAndAddEdgeWeight(){
+        Dialog<String> dialog = createSimpleDialogBox("Enter weight");
+        final Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        okButton.addEventFilter(ActionEvent.ACTION, event -> {
+            if (!isValid(input.getText())) {
+                event.consume();
+            }
+        });
+            dialog.setResultConverter((ButtonType button) -> {
+                if (button == ButtonType.OK) {
+                        return input.getText();
+                }
+                return null;
+            });
+            Optional<String> result = dialog.showAndWait();
+            return result;
+    }
     private void addEdge(Point point, String id){
         if(clickCount == 0){
             pointA = new Point(point.getX(), point.getY());
@@ -82,36 +105,17 @@ public class Controller{
         }else{
             pointB = new Point(point.getX(), point.getY());
             vertexIdB = id;
-
-
-            Dialog<String> dialog = createSimpleDialogBox("Enter weight");
-
-            dialog.setResultConverter((ButtonType button) -> {
-                if (button == ButtonType.OK) {
-                    return input.getText();
-                }
-                return null;
-            });
-
-            Optional<String> result = dialog.showAndWait();
-            result.ifPresent((String weight) ->{
-                    int w;
-                    try {
-                        w = Integer.parseInt(weight);
-                    }catch (NumberFormatException e){
-                        w = 5;
-                    }
-
+            getAndAddEdgeWeight().ifPresent((String weight) ->{
+                    int w = Integer.parseInt(weight);
                     Edge edge = new Edge(vertexIdA, vertexIdB, w);
                     try{
                         Graph.getVertex(vertexIdA).adjacentEdges.add(edge);
-                        Graph.getVertex(vertexIdB).adjacentEdges.add(edge);
+                        Graph.getVertex(vertexIdB).adjacentEdges.add(new Edge(vertexIdB,vertexIdA,w));
                         Graph.addEdge(edge);
-                        drawLine(pointA, pointB, edge.getId());
+                        drawLine(pointA, pointB, edge.getId(),Color.RED);
                     }catch (NullPointerException e) {
                         System.out.println("Can't add edge");
                     }
-
             });
 
 
@@ -119,7 +123,7 @@ public class Controller{
         }
     }
 
-    private void drawLine(Point a, Point b, String id) {
+    private void drawLine(Point a, Point b, String id, Color c) {
         Line l = new Line();
 
         l.setStartX(a.getX());
@@ -127,9 +131,7 @@ public class Controller{
 
         l.setEndX(b.getX());
         l.setEndY(b.getY());
-        l.setStroke(Color.RED);
-
-        l.setStroke(Color.RED);
+        l.setStroke(c);
 
         l.setId(id);
 
@@ -149,7 +151,7 @@ public class Controller{
         c.setRadius(10);
         c.setCenterX(point.getX());
         c.setCenterY(point.getY());
-        c.setId(String.valueOf(id));
+        c.setId(id);
         Coordinates.add(id, new Point(c.getCenterX(), c.getCenterY()));
 
         c.setOnMouseClicked(e ->{
@@ -160,6 +162,20 @@ public class Controller{
             }
             else if(mode == 3) {
                 removeCircle(c.getId());
+            }
+            else if(mode == 4) {
+                if(!startSet) {
+                    changePathVertexColor();
+                    c.setFill(Color.GREEN);
+                    startSet = true;
+                    startID = c.getId();
+                }
+                else{
+                    c.setFill(Color.RED);
+                    startSet = false;
+                    endID = c.getId();
+                    ArrayList<Vertex> path = ShortestPath.calculateAndGetPath(startID,endID);
+                }
             }
         });
 
@@ -172,8 +188,15 @@ public class Controller{
         drawPane.getChildren().add(c);
     }
 
+    private void changePathVertexColor() {
+        for (Node c:drawPane.getChildren()) {
+            if(c instanceof Circle && (c.getId().equals(startID) || c.getId().equals(endID)) ) {
+                ((Circle) c).setFill(Color.BLACK);
+            }
+        }
+    }
     private void dragVertex(Circle c, MouseEvent e) {
-        //Rework
+        //Rework needed
         c.setCenterX(e.getX());
         c.setCenterY(e.getY());
 
@@ -193,7 +216,7 @@ public class Controller{
         String b = edge.getVertexToID();
         Point pointA = Coordinates.get(a);
         Point pointB = Coordinates.get(b);
-        drawLine(pointA, pointB, edge.getId());
+        drawLine(pointA, pointB, edge.getId(),Color.RED);
     }
 
     private void removeLine(String id) {
@@ -236,25 +259,33 @@ public class Controller{
             drawPane.getChildren().remove(c);
         }
     }
+
+    @FXML
+    public void changeModeTo4(){
+        mode = 4;
+        changePathVertexColor();
+    }
     @FXML
     public void changeModeTo3(){
         mode = 3;
+        changePathVertexColor();
     }
     @FXML
     public void changeModeTo2(){
         mode = 2;
+        changePathVertexColor();
     }
 
     @FXML
     public void changeModeTo1(){
         clickCount = 0;
-
+        changePathVertexColor();
         mode = 1;
     }
     @FXML
     public void changeModeTo0(){
         clickCount = 0;
-
+        changePathVertexColor();
         mode = 0;
     }
 
