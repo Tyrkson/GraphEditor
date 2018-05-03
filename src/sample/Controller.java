@@ -36,6 +36,7 @@ public class Controller{
     private boolean startSet = false;
     private String startID;
     private String endID;
+    private ArrayList<Vertex> path;
 
     @FXML
     private Pane drawPane;
@@ -108,9 +109,12 @@ public class Controller{
             getAndAddEdgeWeight().ifPresent((String weight) ->{
                     int w = Integer.parseInt(weight);
                     Edge edge = new Edge(vertexIdA, vertexIdB, w);
+                    String edgeID = edge.getId();
                     try{
                         Graph.getVertex(vertexIdA).adjacentEdges.add(edge);
-                        Graph.getVertex(vertexIdB).adjacentEdges.add(new Edge(vertexIdB,vertexIdA,w));
+                        Edge tmpEdge = new Edge(vertexIdB,vertexIdA,w);
+                        tmpEdge.setID(edgeID);
+                        Graph.getVertex(vertexIdB).adjacentEdges.add(tmpEdge);
                         Graph.addEdge(edge);
                         drawLine(pointA, pointB, edge.getId(),Color.RED);
                     }catch (NullPointerException e) {
@@ -165,6 +169,7 @@ public class Controller{
             }
             else if(mode == 4) {
                 if(!startSet) {
+                    if(path != null) drawPath(Color.RED);
                     changePathVertexColor();
                     c.setFill(Color.GREEN);
                     startSet = true;
@@ -174,7 +179,8 @@ public class Controller{
                     c.setFill(Color.RED);
                     startSet = false;
                     endID = c.getId();
-                    ArrayList<Vertex> path = ShortestPath.calculateAndGetPath(startID,endID);
+                    path = ShortestPath.calculateAndGetPath(startID,endID);
+                    if(path != null) drawPath(Color.GREEN);
                 }
             }
         });
@@ -186,6 +192,21 @@ public class Controller{
         });
 
         drawPane.getChildren().add(c);
+    }
+
+    private void drawPath(Color c) {
+        Vertex prev = path.get(0);
+        for (int i = 1; i < path.size(); i++) {
+            Vertex v = path.get(i);
+            for (Edge e: v.adjacentEdges) {
+                if(e.getVertexToID().equals(prev.getId())) {
+                    removeLine(e.getId());
+                    drawLine(Coordinates.get(prev.getId()),
+                            Coordinates.get(v.getId()), e.getId(),c);
+                    prev = v;
+                }
+            }
+        }
     }
 
     private void changePathVertexColor() {
@@ -219,7 +240,7 @@ public class Controller{
         drawLine(pointA, pointB, edge.getId(),Color.RED);
     }
 
-    private void removeLine(String id) {
+    private boolean removeLine(String id) {
         Line l = null;
         for(Node n: drawPane.getChildren()){
             if(n instanceof Line){
@@ -229,7 +250,8 @@ public class Controller{
                 }
             }
         }
-        if(l != null) drawPane.getChildren().remove(l);
+        if(l != null) return drawPane.getChildren().remove(l);
+        return false;
     }
 
     private void removeCircle(String id) {
@@ -264,16 +286,19 @@ public class Controller{
     public void changeModeTo4(){
         mode = 4;
         changePathVertexColor();
+        if(path != null) drawPath(Color.RED);
     }
     @FXML
     public void changeModeTo3(){
         mode = 3;
         changePathVertexColor();
+        if(path != null) drawPath(Color.RED);
     }
     @FXML
     public void changeModeTo2(){
         mode = 2;
         changePathVertexColor();
+        if(path != null) drawPath(Color.RED);
     }
 
     @FXML
@@ -281,12 +306,14 @@ public class Controller{
         clickCount = 0;
         changePathVertexColor();
         mode = 1;
+        if(path != null) drawPath(Color.RED);
     }
     @FXML
     public void changeModeTo0(){
         clickCount = 0;
         changePathVertexColor();
         mode = 0;
+        if(path != null) drawPath(Color.RED);
     }
 
     private Dialog<String> createSimpleDialogBox(String title){

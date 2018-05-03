@@ -68,14 +68,14 @@ public class ShortestPath {
         computeDistances();
         ArrayList<Vertex> path = getPath(Graph.getVertex(endID));
         if(path != null && minDistances.get(Graph.getVertex(endID)) != Long.MAX_VALUE) {
-            System.out.println("Distance: " + minDistances.get(Graph.getVertex(endID)));
+            /*System.out.println("Distance: " + minDistances.get(Graph.getVertex(endID)));
             int counter = 1;
             for (Vertex v:path) {
                 System.out.print(v.getName());
                 if(counter < path.size()) System.out.print(" -> ");
                 counter++;
             }
-            System.out.println();
+            System.out.println();*/
             return path;
         }
         else{
